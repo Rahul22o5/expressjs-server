@@ -1,12 +1,16 @@
-const http=require('http');
-const server=http.createServer((req,res)=>{
+const express = require('express');
+const app = express();
+let port=3000;
 
-    if(req.url == '/'){
-        res.end(`
-            <h1>Welcome To Sharpener</h1>
-        `)
-    }
+function addUser(req,res,next){
+    req.user = "Guest";
+    next();
+}
+app.get('/welcome',addUser,(req,res) =>{
+    res.send(`<h1>Welcome, ${req.user}!</h1>`);
+    
 })
-server.listen(3000,()=>{
-    console.log('Server is up and running on port 3000! Ready to handle requests.');
+
+app.listen(port,()=>{
+    console.log(`Server is up and running on port ${port}! Ready to handle requests.`);
 })
